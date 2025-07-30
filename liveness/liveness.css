@@ -1,0 +1,168 @@
+.liveness-flows {
+  padding: 0;
+  list-style-type: none;
+}
+
+.form-body {
+  min-height: calc(80vh - 8rem);
+  width: 100%;
+  overflow: hidden;
+  transition: 0.5s ease-in-out;
+}
+.d-flex {
+  display: flex;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.align-items-center {
+  align-items: center;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.status-img {
+  height: 1rem;
+}
+
+.d-none {
+  display: none;
+}
+
+.liveness-video-container {
+  position: relative;
+  max-height: 30rem;
+  max-width: 30rem;
+  flex-direction: column;
+}
+.liveness-instruction-text {
+  color: white;
+  font-weight: 700;
+}
+.liveness-intro-title {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: normal;
+  text-align: center;
+}
+.liveness-intro-sub-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+.video-inner-element {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+.shadow-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16rem;
+  height: 20rem;
+  box-shadow: 0px 0px 0px 400px #0000008a;
+  border-radius: 50%;
+  z-index: 2;
+}
+.face-success-border {
+  border: 2px solid #38bd48;
+}
+
+.face-failure-border {
+  border: 2px solid #fa4c4b;
+}
+
+.video-element {
+  z-index: 1;
+}
+.video-element video {
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  width: 100%;
+}
+.info-element {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.flow-status-card {
+  background-color: #80808080;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: white;
+}
+.signup_full .form_signup_one .item_group {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}
+.ev-logo {
+  padding: 0px 24px !important;
+}
+.ev-locale-selector {
+  padding: 0px 24px !important;
+}
+.signup_full .form_signup_one .item_group.form-prop {
+  border: none;
+}
+.selfie-preview-image {
+  height: calc(75vh - 16rem);
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fade-in-out {
+  animation: fadeInOut 3s infinite ease-in-out;
+}
+
+.modal-loading-card {
+  background-color: #b7d0ffe6;
+}
+.section-prop {
+  padding: 1.875rem;
+}
+@media (max-width: 576px) {
+  .shadow-overlay {
+    width: 18rem;
+    height: 22rem;
+  }
+  .form-body {
+    height: 85vh;
+    position: absolute;
+    bottom: 0;
+    overflow-y: auto;
+  }
+  .height-80vh {
+    height: 80vh !important;
+  }
+  .selfie-preview-image {
+    height: 55vh;
+  }
+  .ev-logo {
+    width: 100%;
+  }
+  .section-prop {
+    padding: 0;
+  }
+}
