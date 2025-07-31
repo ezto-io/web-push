@@ -1,5 +1,6 @@
 import { getCameraAccess } from "./camera.js";
 import { Detector, loadModel } from "./detector.js";
+import { validateConfig, sanitizeConfig } from "./configValidator.js";
 
 const errors = {
   initError: {
@@ -31,34 +32,34 @@ class Liveness {
             <video id="video-element" class="rounded" autoplay playsinline muted></video>
         </div>
         <div class="video-inner-element-d8n2q shadow-overlay-f3l7w face-failure-border-h4m8y" id="video-shadow-element"></div>
-        <div class="video-inner-element-d8n2q info-element-l2s5x pt-3">
-            <p id="liveness-flow-instruction" class="text-center liveness-instruction-text-e7h3k px-2">
+        <div class="video-inner-element-d8n2q info-element-l2s5x">
+            <p id="liveness-flow-instruction" class="text-center liveness-instruction-text-e7h3k px-2-ad89">
                 Align your face to the center of the recording.
             </p>
             <div class="d-flex-p5n2l justify-content-center-m8h4v position-relative-r9t7z align-items-center-k6j3x">
-              <ul id="liveness-flows" class="d-flex-p5n2l flex-wrap justify-content-center-m8h4v px-2 mb-5 liveness-flows-x7k9m">
+              <ul id="liveness-flows" class="d-flex-p5n2l flex-wrap-iuou justify-content-center-m8h4v px-2-ad89 liveness-flows-x7k9m">
                 <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="fingerCount">
                     <img class="status-img-a4f1s">
-                    <span class="text-white">FingerCount</span>
+                    <span>FingerCount</span>
                 </li>
                 <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="blink">
                     <img class="status-img-a4f1s">
-                    <span class="text-white">Blink</span></li>
+                    <span>Blink</span></li>
                 <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="speech">
                     <img class="status-img-a4f1s">
-                    <span class="text-white">Speech</span>
+                    <span>Speech</span>
                 </li>
                 <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="movement">
                     <img class="status-img-a4f1s">
-                    <span class="text-white">Movement</span>
+                    <span>Movement</span>
                 </li>
               </ul>
             </div>
         </div>
       </div>`;
 
-  loaderSrc = "./assets/circular-loader.gif";
-  completedSrc = "./assets/completed-tick.svg";
+  loaderSrc = "../assets/circular-loader.gif";
+  completedSrc = "../assets/completed-tick.svg";
   metadata = null;
 
   constructor(
@@ -82,15 +83,15 @@ class Liveness {
     this.completedFlows = [];
     const defaultConfig = {
       fingerCount: {
-        enabled: true,
+        enabled: false,
         expected: 4,
       },
       blink: {
-        enabled: true,
+        enabled: false,
         expected: 3,
       },
       speech: {
-        enabled: true,
+        enabled: false,
         expected: "Hat",
       },
       movement: {
@@ -98,13 +99,17 @@ class Liveness {
       },
     };
 
-    this.config = {
-      ...defaultConfig,
-      fingerCount: { ...defaultConfig.fingerCount, ...config.fingerCount },
-      blink: { ...defaultConfig.blink, ...config.blink },
-      speech: { ...defaultConfig.speech, ...config.speech },
-      movement: { ...defaultConfig.movement, ...config.movement },
-    };
+    try {
+      // Validate and sanitize the config
+      this.config = sanitizeConfig(config, defaultConfig);
+    } catch (error) {
+      // Call error handler if validation fails
+      this.onError({
+        name: "ConfigValidationError",
+        message: error.message,
+      });
+      return;
+    }
 
     this.helpText = {
       alignFaceText: "Align your face to the center of the recording.",
@@ -164,13 +169,13 @@ class Liveness {
       this.videoRecorder.stop();
       this.videoRecorder = null;
     }
-    
+
     // Stop video stream
     if (this.videoStream) {
-      this.videoStream.getTracks().forEach(track => track.stop());
+      this.videoStream.getTracks().forEach((track) => track.stop());
       this.videoStream = null;
     }
-    
+
     // Clean up detector
     if (this.detector) {
       this.detector.destroy();
