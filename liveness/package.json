@@ -1,0 +1,32 @@
+{
+  "name": "liveness",
+  "version": "1.0.0",
+  "description": "liveness sdk from ezto verify",
+  "keywords": [
+    "ezto",
+    "eztoverify",
+    "verify",
+    "vrfy",
+    "auth",
+    "ezto",
+    "auth",
+    "liveness",
+    "sdk"
+  ],
+  "homepage": "https://github.com/ezto-io/web-push#readme",
+  "bugs": {
+    "url": "https://github.com/ezto-io/web-push/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezto-io/web-push.git"
+  },
+  "license": "Apache-2.0",
+  "author": "ezto",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "terser src/index.js -c -m -o dist/liveness.min.js"
+  }
+}
