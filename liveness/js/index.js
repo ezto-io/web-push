@@ -26,30 +26,30 @@ const errors = {
 
 class Liveness {
   uiComponent = `
-      <div class="liveness-video-container form-body d-flex" id="liveness-video-component-wrapper">
-        <div class="video-inner-element video-element">
+      <div class="liveness-video-container-y5g9u form-body-q3w8r d-flex-p5n2l" id="liveness-video-component-wrapper">
+        <div class="video-inner-element-d8n2q video-element-j7p3r">
             <video id="video-element" class="rounded" autoplay playsinline muted></video>
         </div>
-        <div class="video-inner-element shadow-overlay face-failure-border" id="video-shadow-element"></div>
-        <div class="video-inner-element info-element pt-3">
-            <p id="liveness-flow-instruction" class="text-center liveness-instruction-text px-2">
+        <div class="video-inner-element-d8n2q shadow-overlay-f3l7w face-failure-border-h4m8y" id="video-shadow-element"></div>
+        <div class="video-inner-element-d8n2q info-element-l2s5x pt-3">
+            <p id="liveness-flow-instruction" class="text-center liveness-instruction-text-e7h3k px-2">
                 Align your face to the center of the recording.
             </p>
-            <div class="d-flex justify-content-center position-relative align-items-center">
-              <ul id="liveness-flows" class="d-flex flex-wrap justify-content-center px-2 mb-5 liveness-flows">
-                <li class="flow-status-card d-none align-items-center" id="fingerCount">
-                    <img class="status-img">
+            <div class="d-flex-p5n2l justify-content-center-m8h4v position-relative-r9t7z align-items-center-k6j3x">
+              <ul id="liveness-flows" class="d-flex-p5n2l flex-wrap justify-content-center-m8h4v px-2 mb-5 liveness-flows-x7k9m">
+                <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="fingerCount">
+                    <img class="status-img-a4f1s">
                     <span class="text-white">FingerCount</span>
                 </li>
-                <li class="flow-status-card d-none align-items-center" id="blink">
-                    <img class="status-img">
+                <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="blink">
+                    <img class="status-img-a4f1s">
                     <span class="text-white">Blink</span></li>
-                <li class="flow-status-card d-none align-items-center" id="speech">
-                    <img class="status-img">
+                <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="speech">
+                    <img class="status-img-a4f1s">
                     <span class="text-white">Speech</span>
                 </li>
-                <li class="flow-status-card d-none align-items-center" id="movement">
-                    <img class="status-img">
+                <li class="flow-status-card-n9w6v d-none-w2q8n align-items-center-k6j3x" id="movement">
+                    <img class="status-img-a4f1s">
                     <span class="text-white">Movement</span>
                 </li>
               </ul>
@@ -159,31 +159,31 @@ class Liveness {
   };
 
   destroy = () => {
-  // Stop recording
-  if (this.videoRecorder) {
-    this.videoRecorder.stop();
-    this.videoRecorder = null;
-  }
-  
-  // Stop video stream
-  if (this.videoStream) {
-    this.videoStream.getTracks().forEach(track => track.stop());
-    this.videoStream = null;
-  }
-  
-  // Clean up detector
-  if (this.detector) {
-    this.detector.destroy();
-    this.detector = null;
-  }
-};
+    // Stop recording
+    if (this.videoRecorder) {
+      this.videoRecorder.stop();
+      this.videoRecorder = null;
+    }
+    
+    // Stop video stream
+    if (this.videoStream) {
+      this.videoStream.getTracks().forEach(track => track.stop());
+      this.videoStream = null;
+    }
+    
+    // Clean up detector
+    if (this.detector) {
+      this.detector.destroy();
+      this.detector = null;
+    }
+  };
 
   updateStatusUi = (id, status) => {
     if (!id && status === "loading") return;
     const statusElement = document.getElementById(id);
     if (statusElement) {
-      statusElement.classList.remove("d-none");
-      statusElement.classList.add("d-flex");
+      statusElement.classList.remove("d-none-w2q8n");
+      statusElement.classList.add("d-flex-p5n2l");
       if (status === "completed") {
         statusElement.querySelector("img").src = this.completedSrc;
       } else if (status === "loading") {
@@ -304,11 +304,11 @@ class Liveness {
     window.addEventListener("faceCenterUpdate", async (e) => {
       // isCenter return whether face is centered or not(Boolean)
       if (e.detail.isCenter) {
-        this.faceBorderElement.classList.remove("face-failure-border");
-        this.faceBorderElement.classList.add("face-success-border");
+        this.faceBorderElement.classList.remove("face-failure-border-h4m8y");
+        this.faceBorderElement.classList.add("face-success-border-g6k9t");
       } else {
-        this.faceBorderElement.classList.remove("face-success-border");
-        this.faceBorderElement.classList.add("face-failure-border");
+        this.faceBorderElement.classList.remove("face-success-border-g6k9t");
+        this.faceBorderElement.classList.add("face-failure-border-h4m8y");
       }
       // retry return true when face is not center for 4 seconds continuously
       if (e.detail.retry) {
