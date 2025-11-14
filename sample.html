@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liveness SDK Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ezto-io/web-push@latest/liveness/styles/liveness.css" />
+  </head>
+  <body>
+    <main>
+      <h1
+        style="
+          font-size: 1.4rem;
+          letter-spacing: 1px;
+          text-align: center;
+          margin-bottom: 1rem;
+        "
+      >
+        Liveness SDK Demo
+      </h1>
+      <div id="liveness"></div>
+      <div role="status" aria-live="polite" class="msg" id="msg"></div>
+      <div role="alert" class="err" id="err"></div>
+      <div class="button-group">
+        <button id="start" type="button" aria-label="Start liveness detection">
+          Start
+        </button>
+        <button id="retry" type="button" aria-label="Retry liveness detection">
+          Retry
+        </button>
+      </div>
+    </main>
+    <script type="module">
+      import Liveness from "https://cdn.jsdelivr.net/gh/ezto-io/web-push@latest/liveness/dist/liveness.min.js";
+      const config = {
+        fingerCount: {
+          enabled: true,
+          expected: 5,
+        },
+        blink: {
+          enabled: true,
+          expected: 2,
+        },
+        speech: {
+          enabled: true,
+          expected: "Hat",
+        },
+        movement: {
+          enabled: true,
+        },
+      };
+      let livenessSDK = new Liveness(config);
+
+      livenessSDK.onLoaded = () => {};
+
+      livenessSDK.onCompleted = () => {};
+
+      livenessSDK.onError = (error) => {};
+
+      livenessSDK.onFileProcessed = (videoFile) => {};
+
+      // Initialize on load
+      livenessSDK.init();
+
+      livenessSDK.startLiveness();
+
+      livenessSDK.retry();
+
+      document.getElementById("start").addEventListener("click", () => {
+        document.getElementById("err").innerText = "";
+        livenessSDK.startLiveness();
+      });
+
+      document.getElementById("retry").addEventListener("click", () => {
+        document.getElementById("err").innerText = "";
+        livenessSDK.retry();
+        livenessSDK.startLiveness();
+      });
+
+      function downloadFile(file, customFilename) {
+        const url = URL.createObjectURL(file);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = customFilename || file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      }
+    </script>
+  </body>
+</html>

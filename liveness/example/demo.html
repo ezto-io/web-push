@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liveness SDK Demo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/ezto-io/web-push@latest/liveness/styles/liveness.css"
+    />
+    <style>
+      body {
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, sans-serif;
+        background: #161c24;
+        color: #f3f6f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      main {
+        width: 100%;
+        max-width: 400px;
+        margin: 2rem 0;
+        padding: 2rem 1rem;
+        background: #232b36;
+        border-radius: 10px;
+        box-shadow: 0 2px 16px #0005;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #liveness {
+        width: 100%;
+      }
+      .msg {
+        color: #65e9b4;
+        min-height: 1.5em;
+        margin: 0.5em 0;
+      }
+      .err {
+        color: #ff7b7b;
+        min-height: 1.5em;
+        margin: 0.5em 0;
+      }
+      .button-group {
+        display: flex;
+        gap: 1em;
+        margin: 1em 0;
+      }
+      button {
+        font-size: 1rem;
+        padding: 0.7em 1.5em;
+        border-radius: 6px;
+        border: none;
+        background: #2589f3;
+        color: white;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      button:hover,
+      button:focus {
+        background: #1666b5;
+      }
+      @media (max-width: 520px) {
+        main {
+          padding: 1rem 0.2rem;
+          box-shadow: none;
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1
+        style="
+          font-size: 1.4rem;
+          letter-spacing: 1px;
+          text-align: center;
+          margin-bottom: 1rem;
+        "
+      >
+        Liveness SDK Demo
+      </h1>
+      <div id="liveness"></div>
+      <div role="status" aria-live="polite" class="msg" id="msg"></div>
+      <div role="alert" class="err" id="err"></div>
+      <div class="button-group">
+        <button id="start" type="button" aria-label="Start liveness detection">
+          Start
+        </button>
+        <button id="retry" type="button" aria-label="Retry liveness detection">
+          Retry
+        </button>
+      </div>
+    </main>
+    <script type="module">
+      import Liveness from "../dist/liveness.min.js";
+      const config = {
+        fingerCount: {
+          enabled: true,
+          expected: 5,
+        },
+        blink: {
+          enabled: true,
+          expected: 2,
+        },
+        speech: {
+          enabled: true,
+          expected: "Hat",
+        },
+        movement: {
+          enabled: true,
+        },
+      };
+      let livenessSDK = new Liveness(config);
+
+      livenessSDK.onLoaded = () => {
+        document.getElementById("msg").innerText =
+          "Liveness SDK loaded successfully";
+        document.getElementById("err").innerText = "";
+      };
+
+      livenessSDK.onCompleted = (completedFlows, metadata) => {
+        console.log("completed flows", completedFlows, metadata);
+        document.getElementById("msg").innerText =
+          "Liveness completed successfully.";
+      };
+
+      livenessSDK.onError = (error) => {
+        document.getElementById("err").innerText =
+          error && error.message ? error.message : error;
+      };
+
+      livenessSDK.onFileProcessed = (videoFile) => {
+        console.log("File processed:", videoFile);
+        document.getElementById("msg").innerText =
+          "Video file processed successfully.";
+        downloadFile(videoFile, "liveness_video.webm");
+      };
+
+      // Initialize on load
+      livenessSDK.init();
+
+      document.getElementById("start").addEventListener("click", () => {
+        document.getElementById("err").innerText = "";
+        livenessSDK.startLiveness();
+      });
+
+      document.getElementById("retry").addEventListener("click", () => {
+        document.getElementById("err").innerText = "";
+        livenessSDK.retry();
+        livenessSDK.startLiveness();
+      });
+
+      function downloadFile(file, customFilename) {
+        const url = URL.createObjectURL(file);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = customFilename || file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      }
+    </script>
+  </body>
+</html>
