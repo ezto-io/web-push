@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Liveness SDK Demo</title>
-    <link rel="stylesheet" href="../styles/liveness.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/ezto-io/web-push@latest/liveness/styles/liveness.css"
+    />
     <style>
       body {
         min-height: 100vh;
@@ -122,7 +125,8 @@
         document.getElementById("err").innerText = "";
       };
 
-      livenessSDK.onCompleted = () => {
+      livenessSDK.onCompleted = (completedFlows, metadata) => {
+        console.log("completed flows", completedFlows, metadata);
         document.getElementById("msg").innerText =
           "Liveness completed successfully.";
       };

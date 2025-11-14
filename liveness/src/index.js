@@ -1,6 +1,6 @@
 import { getCameraAccess } from "./camera.js";
 import { Detector, loadModel } from "./detector.js";
-import { validateConfig, sanitizeConfig } from "./configValidator.js";
+import { sanitizeConfig } from "./configValidator.js";
 
 const errors = {
   initError: {
@@ -184,7 +184,7 @@ class Liveness {
   };
 
   updateStatusUi = (id, status) => {
-    if (!id && status === "loading") return;
+    if ((!id && status === "loading") || id === "face_align") return;
     const statusElement = document.getElementById(id);
     if (statusElement) {
       statusElement.classList.remove("d-none-w2q8n");
@@ -292,10 +292,10 @@ class Liveness {
     window.addEventListener("onLivenessUpdate", (e) => {
       if (e.detail.is_completed) {
         this.metadata = e.detail.metadata;
-        this.onCompleted({
-          completedFlows: e.detail.completed_flows,
-          metadata: e.detail.metadata,
-        });
+        this.onCompleted(
+          e.detail.completed_flows,
+          e.detail.metadata,
+        );
         this.videoRecorder.stop();
       }
       this.completedFlows = e.detail.completed_flows;
